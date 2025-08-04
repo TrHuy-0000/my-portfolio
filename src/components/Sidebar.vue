@@ -23,7 +23,7 @@
           </v-btn>
           <v-btn size="small" color="primary" @click="downloadCV">
             <v-icon start size="small">mdi-download</v-icon>
-            CV
+            {{ t("common.downloadCV") }}
           </v-btn>
         </div>
       </template>

@@ -6,7 +6,8 @@ import vi from "@/locales/vi.js";
 export const i18n = createI18n({
   legacy: false,
   globalInjection: true,
-  locale: "en", // default
+  locale: "en", // mặc định là tiếng Anh
+  fallbackLocale: "en",
   messages: {
     en,
     vi,

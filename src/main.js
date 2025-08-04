@@ -13,9 +13,7 @@ import "@mdi/font/css/materialdesignicons.css";
 import { createPinia } from "pinia";
 
 // 👉 i18n (đa ngôn ngữ)
-import { createI18n } from "vue-i18n";
-import vi from "@/locales/vi";
-import en from "@/locales/en";
+import { i18n } from "@/i18n";
 
 // 1. Tạo instance Vuetify
 const vuetify = createVuetify({
@@ -28,18 +26,6 @@ const vuetify = createVuetify({
 
 // 2. Tạo instance Pinia
 const pinia = createPinia();
-
-// 3. Tạo instance i18n
-const i18n = createI18n({
-  legacy: false, // dùng Composition API
-  globalInjection: true, // inject $t toàn cục
-  locale: "vi", // ngôn ngữ mặc định
-  fallbackLocale: "en", // fallback nếu thiếu
-  messages: {
-    vi,
-    en,
-  },
-});
 
 // 4. Khởi tạo Vue app và gắn plugin
 const app = createApp(App);

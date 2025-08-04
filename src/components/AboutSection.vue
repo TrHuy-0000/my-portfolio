@@ -2,8 +2,8 @@
   <div class="about-wrapper">
     <v-container>
       <section id="about" class="about-section">
-        <h2 class="about-title">About Me</h2>
-        <div class="about-desc">None</div>
+        <h2 class="about-title">{{ t("aboutSection.title") }}</h2>
+        <div class="about-desc">{{ t("aboutSection.subtitle") }}</div>
         <div class="about-content">
           <img
             class="about-avatar"
@@ -11,24 +11,33 @@
             alt="about-avatar"
           />
           <div class="about-info">
-            <h3>Data Analyst, Project Manager & Business Analyst.</h3>
+            <h3>{{ t("aboutSection.subtitle") }}</h3>
             <p>
               <em>
-                A motivated student with a strong interest in data analysis,
-                project management, and business analysis. Eager to learn how
-                data, people, and processes come together to create impactful
-                business solutions.
+                {{ t("aboutSection.description") }}
               </em>
             </p>
             <div class="about-grid">
               <ul>
-                <li><b>Phone:</b> 093*****62</li>
-                <li><b>City:</b> District 12, HCMC</li>
+                <li>
+                  <b>{{ t("aboutSection.phone") }}:</b> 093*****62
+                </li>
+                <li>
+                  <b>{{ t("aboutSection.city") }}:</b>
+                  {{ t("aboutSection.location") }}
+                </li>
               </ul>
               <ul>
-                <li><b>Age:</b> 20</li>
-                <li><b>Degree:</b> Undergraduate</li>
-                <li><b>Email:</b> huy36567@gmail.com</li>
+                <li>
+                  <b>{{ t("aboutSection.age") }}:</b> 20
+                </li>
+                <li>
+                  <b>{{ t("aboutSection.degree") }}:</b>
+                  {{ t("aboutSection.degreeValue") }}
+                </li>
+                <li>
+                  <b>{{ t("aboutSection.email") }}:</b> huy36567@gmail.com
+                </li>
               </ul>
             </div>
           </div>
@@ -38,7 +47,11 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+</script>
 
 <style scoped>
 .about-wrapper {

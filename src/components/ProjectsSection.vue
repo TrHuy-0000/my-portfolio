@@ -1,22 +1,22 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <section id="projects" class="projects-section">
     <v-container>
       <div class="section-header">
-        <h2 class="section-title">Featured Projects</h2>
+        <h2 class="section-title">{{ t("projectsSection.title") }}</h2>
         <p class="section-subtitle">
-          Showcasing my work in data analysis, web development, and business
-          solutions
+          {{ t("projectsSection.subtitle") }}
         </p>
       </div>
 
       <!-- Filter Tabs -->
       <div class="filter-tabs">
         <v-chip
-          v-for="category in categories"
-          :key="category"
-          :color="selectedCategory === category ? 'primary' : 'default'"
-          :variant="selectedCategory === category ? 'flat' : 'outlined'"
-          @click="selectedCategory = category"
+          v-for="(category, key) in categories"
+          :key="key"
+          :color="selectedCategory === key ? 'primary' : 'default'"
+          :variant="selectedCategory === key ? 'flat' : 'outlined'"
+          @click="selectedCategory = key"
           class="filter-chip"
         >
           {{ category }}
@@ -67,14 +67,16 @@
                 size="small"
                 :color="getCategoryColor(project.category)"
               >
-                {{ project.category }}
+                {{ categories[project.category] }}
               </v-chip>
             </div>
 
             <!-- Project Content -->
             <v-card-text class="project-content">
-              <h3 class="project-title">{{ project.title }}</h3>
-              <p class="project-description">{{ project.description }}</p>
+              <h3 class="project-title">{{ getProjectTitle(project.key) }}</h3>
+              <p class="project-description">
+                {{ getProjectDescription(project.key) }}
+              </p>
 
               <!-- Tech Stack -->
               <div class="tech-stack">
@@ -101,7 +103,7 @@
                 @click.stop
               >
                 <v-icon start>mdi-open-in-new</v-icon>
-                Live Demo
+                {{ t("projectsSection.liveDemo") }}
               </v-btn>
               <v-spacer></v-spacer>
               <v-btn
@@ -125,7 +127,7 @@
           color="primary"
           @click="loadMore"
         >
-          View More Projects
+          {{ t("projectsSection.viewMore") }}
           <v-icon end>mdi-arrow-down</v-icon>
         </v-btn>
       </div>
@@ -136,19 +138,24 @@
       <v-card v-if="selectedProject">
         <v-img :src="selectedProject.image" height="300" cover></v-img>
         <v-card-title class="text-h5 font-weight-bold">
-          {{ selectedProject.title }}
+          {{ getProjectTitle(selectedProject.key) }}
         </v-card-title>
         <v-card-text>
-          <p class="mb-4">{{ selectedProject.fullDescription }}</p>
+          <p class="mb-4">
+            {{ getProjectFullDescription(selectedProject.key) }}
+          </p>
 
-          <h4 class="mb-2">Key Features:</h4>
+          <h4 class="mb-2">{{ t("projectsSection.keyFeatures") }}</h4>
           <ul class="mb-4">
-            <li v-for="feature in selectedProject.features" :key="feature">
+            <li
+              v-for="feature in getProjectFeatures(selectedProject.key)"
+              :key="feature"
+            >
               {{ feature }}
             </li>
           </ul>
 
-          <h4 class="mb-2">Technologies Used:</h4>
+          <h4 class="mb-2">{{ t("projectsSection.technologiesUsed") }}</h4>
           <div class="tech-stack mb-4">
             <v-chip
               v-for="tech in selectedProject.technologies"
@@ -169,7 +176,7 @@
             color="primary"
             variant="flat"
           >
-            View Demo
+            {{ t("projectsSection.liveDemo") }}
           </v-btn>
           <v-btn
             v-if="selectedProject.github"
@@ -177,10 +184,12 @@
             target="_blank"
             variant="outlined"
           >
-            View Code
+            {{ t("projectsSection.viewCode") }}
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn variant="text" @click="dialog = false">Close</v-btn>
+          <v-btn variant="text" @click="dialog = false">{{
+            t("projectsSection.close")
+          }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -189,132 +198,38 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
+import projectsData from "@/data/projects.json";
 
-const selectedCategory = ref("All");
+const { t } = useI18n();
+
+const selectedCategory = ref("all");
 const dialog = ref(false);
 const selectedProject = ref(null);
 const projectsToShow = ref(6);
 
-const categories = [
-  "All",
-  "Data Analysis",
-  "Web Development",
-  "Business Analysis",
-];
+const categories = computed(() => ({
+  all: t("projectsSection.categories.all"),
+  dataAnalysis: t("projectsSection.categories.dataAnalysis"),
+  webDevelopment: t("projectsSection.categories.webDevelopment"),
+  businessAnalysis: t("projectsSection.categories.businessAnalysis"),
+}));
 
-const projects = [
-  {
-    id: 1,
-    title: "Sales Analytics Dashboard",
-    description:
-      "Interactive dashboard for real-time sales analysis and forecasting",
-    fullDescription:
-      "A comprehensive sales analytics platform that provides real-time insights into sales performance, customer behavior, and market trends. Built with Power BI and Python for advanced data processing.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600",
-    category: "Data Analysis",
-    technologies: ["Python", "Power BI", "SQL", "Pandas"],
-    features: [
-      "Real-time sales tracking",
-      "Predictive analytics for sales forecasting",
-      "Customer segmentation analysis",
-      "Interactive visualizations",
-    ],
-    demo: "#",
-    github: "https://github.com/TrHuy-0000",
-  },
-  {
-    id: 2,
-    title: "E-commerce Platform",
-    description: "Full-stack e-commerce solution with Vue.js and Node.js",
-    fullDescription:
-      "A modern e-commerce platform featuring product catalog, shopping cart, secure payment integration, and admin dashboard for inventory management.",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600",
-    category: "Web Development",
-    technologies: ["Vue.js", "Node.js", "MongoDB", "Stripe API"],
-    features: [
-      "Responsive product catalog",
-      "Secure payment processing",
-      "User authentication & profiles",
-      "Admin inventory management",
-    ],
-    demo: "#",
-    github: "https://github.com/TrHuy-0000",
-  },
-  {
-    id: 3,
-    title: "Customer Churn Prediction",
-    description: "ML model to predict and prevent customer churn",
-    fullDescription:
-      "Machine learning solution that analyzes customer behavior patterns to predict churn probability and recommend retention strategies.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600",
-    category: "Data Analysis",
-    technologies: ["Python", "Scikit-learn", "TensorFlow", "Jupyter"],
-    features: [
-      "Churn probability scoring",
-      "Feature importance analysis",
-      "Retention strategy recommendations",
-      "Model performance dashboard",
-    ],
-    github: "https://github.com/TrHuy-0000",
-  },
-  {
-    id: 4,
-    title: "Project Management System",
-    description: "Agile project management tool for team collaboration",
-    fullDescription:
-      "A comprehensive project management system designed for agile teams, featuring sprint planning, task tracking, and team collaboration tools.",
-    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600",
-    category: "Business Analysis",
-    technologies: ["Vue.js", "FastAPI", "PostgreSQL", "Docker"],
-    features: [
-      "Sprint planning & tracking",
-      "Kanban board visualization",
-      "Team collaboration tools",
-      "Performance analytics",
-    ],
-    demo: "#",
-    github: "https://github.com/TrHuy-0000",
-  },
-  {
-    id: 5,
-    title: "Smart Travel Planner",
-    description: "AI-powered travel itinerary generator",
-    fullDescription:
-      "An intelligent travel planning application that uses AI to create personalized itineraries based on user preferences, budget, and travel history.",
-    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600",
-    category: "Web Development",
-    technologies: ["React", "Python", "OpenAI API", "Google Maps API"],
-    features: [
-      "AI-powered itinerary generation",
-      "Budget optimization",
-      "Real-time weather integration",
-      "Collaborative trip planning",
-    ],
-    demo: "#",
-    github: "https://github.com/TrHuy-0000",
-  },
-  {
-    id: 6,
-    title: "Supply Chain Optimizer",
-    description: "Optimization tool for supply chain efficiency",
-    fullDescription:
-      "Advanced analytics platform that optimizes supply chain operations through demand forecasting, inventory management, and route optimization.",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600",
-    category: "Business Analysis",
-    technologies: ["Python", "Excel VBA", "Tableau", "OR-Tools"],
-    features: [
-      "Demand forecasting models",
-      "Inventory optimization",
-      "Route planning algorithms",
-      "Cost analysis dashboard",
-    ],
-    github: "https://github.com/TrHuy-0000",
-  },
-];
+// Import projects from JSON file
+const projects = projectsData.projects;
+
+// Helper functions for translation
+const getProjectTitle = (key) => t(`projectsSection.projects.${key}.title`);
+const getProjectDescription = (key) =>
+  t(`projectsSection.projects.${key}.description`);
+const getProjectFullDescription = (key) =>
+  t(`projectsSection.projects.${key}.fullDescription`);
+const getProjectFeatures = (key) =>
+  t(`projectsSection.projects.${key}.features`);
 
 const filteredProjects = computed(() => {
   const filtered =
-    selectedCategory.value === "All"
+    selectedCategory.value === "all"
       ? projects
       : projects.filter((p) => p.category === selectedCategory.value);
 
@@ -323,7 +238,7 @@ const filteredProjects = computed(() => {
 
 const showViewMore = computed(() => {
   const totalFiltered =
-    selectedCategory.value === "All"
+    selectedCategory.value === "all"
       ? projects.length
       : projects.filter((p) => p.category === selectedCategory.value).length;
 
@@ -332,9 +247,9 @@ const showViewMore = computed(() => {
 
 const getCategoryColor = (category) => {
   const colors = {
-    "Data Analysis": "blue",
-    "Web Development": "green",
-    "Business Analysis": "purple",
+    dataAnalysis: "blue",
+    webDevelopment: "green",
+    businessAnalysis: "purple",
   };
   return colors[category] || "grey";
 };

@@ -2,9 +2,9 @@
   <section id="skills" class="skills-section">
     <v-container>
       <div class="section-header">
-        <h2 class="section-title">My Skills</h2>
+        <h2 class="section-title">{{ t("skillsSection.title") }}</h2>
         <p class="section-subtitle">
-          A combination of technical expertise and language proficiency
+          {{ t("skillsSection.subtitle") }}
         </p>
       </div>
 
@@ -14,7 +14,7 @@
           <div class="skills-card">
             <h3 class="card-title">
               <v-icon start color="primary">mdi-code-braces</v-icon>
-              Technical Skills
+              {{ t("skillsSection.technical") }}
             </h3>
 
             <div class="skill-items">
@@ -53,7 +53,7 @@
           <div class="skills-card">
             <h3 class="card-title">
               <v-icon start color="success">mdi-certificate</v-icon>
-              Certifications & Languages
+              {{ t("skillsSection.certifications") }}
             </h3>
 
             <div class="cert-grid">
@@ -77,7 +77,7 @@
             <!-- Soft Skills -->
             <h3 class="card-title mt-8">
               <v-icon start color="orange">mdi-head-lightbulb</v-icon>
-              Soft Skills
+              {{ t("skillsSection.softSkills") }}
             </h3>
             <div class="soft-skills">
               <v-chip
@@ -123,6 +123,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const showProgress = ref(false);
 

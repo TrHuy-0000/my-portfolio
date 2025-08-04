@@ -12,8 +12,7 @@
           <span class="cursor">|</span>
         </div>
         <p class="hero-description">
-          Passionate about transforming data into insights and leading projects
-          to success
+          {{ t("hero.description") }}
         </p>
         <div class="hero-actions">
           <v-btn
@@ -23,7 +22,7 @@
             @click="scrollTo('contact')"
             class="cta-btn"
           >
-            Get In Touch
+            {{ t("hero.cta") }}
             <v-icon end>mdi-arrow-right</v-icon>
           </v-btn>
           <v-btn
@@ -33,7 +32,7 @@
             @click="scrollTo('projects')"
             class="secondary-btn"
           >
-            View Projects
+            {{ t("hero.viewProjects") }}
             <v-icon end>mdi-folder-eye</v-icon>
           </v-btn>
         </div>
@@ -55,29 +54,32 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const typedText = ref("");
 const currentTextIndex = ref(0);
 const currentCharIndex = ref(0);
 const isDeleting = ref(false);
 
-const texts = [
+const texts = computed(() => [
   "Data Analyst",
   "Project Manager",
   "Business Analyst",
   "Problem Solver",
-];
+]);
 
 // Dynamic greeting based on time
 const greeting = computed(() => {
   const hour = new Date().getHours();
-  if (hour < 12) return "Good Morning, I'm";
-  if (hour < 18) return "Good Afternoon, I'm";
-  return "Good Evening, I'm";
+  if (hour < 12) return t("hero.greeting.morning");
+  if (hour < 18) return t("hero.greeting.afternoon");
+  return t("hero.greeting.evening");
 });
 
 const typeWriter = () => {
-  const currentText = texts[currentTextIndex.value];
+  const currentText = texts.value[currentTextIndex.value];
 
   if (!isDeleting.value) {
     typedText.value = currentText.substring(0, currentCharIndex.value + 1);
@@ -94,7 +96,8 @@ const typeWriter = () => {
 
     if (currentCharIndex.value === 0) {
       isDeleting.value = false;
-      currentTextIndex.value = (currentTextIndex.value + 1) % texts.length;
+      currentTextIndex.value =
+        (currentTextIndex.value + 1) % texts.value.length;
     }
   }
 

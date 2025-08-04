@@ -1,0 +1,56 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "key": "salesDashboard",
+      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600",
+      "category": "dataAnalysis",
+      "technologies": ["Python", "Power BI", "SQL", "Pandas"],
+      "demo": "#",
+      "github": "https://github.com/TrHuy-0000"
+    },
+    {
+      "id": 2,
+      "key": "ecommerce", 
+      "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600",
+      "category": "webDevelopment",
+      "technologies": ["Vue.js", "Node.js", "MongoDB", "Stripe API"],
+      "demo": "#",
+      "github": "https://github.com/TrHuy-0000"
+    },
+    {
+      "id": 3,
+      "key": "churnPrediction",
+      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600",
+      "category": "dataAnalysis",
+      "technologies": ["Python", "Scikit-learn", "TensorFlow", "Jupyter"],
+      "github": "https://github.com/TrHuy-0000"
+    },
+    {
+      "id": 4,
+      "key": "projectManagement",
+      "image": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600",
+      "category": "businessAnalysis",
+      "technologies": ["Vue.js", "FastAPI", "PostgreSQL", "Docker"],
+      "demo": "#",
+      "github": "https://github.com/TrHuy-0000"
+    },
+    {
+      "id": 5,
+      "key": "travelPlanner",
+      "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600",
+      "category": "webDevelopment", 
+      "technologies": ["React", "Python", "OpenAI API", "Google Maps API"],
+      "demo": "#",
+      "github": "https://github.com/TrHuy-0000"
+    },
+    {
+      "id": 6,
+      "key": "supplyChain",
+      "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600",
+      "category": "businessAnalysis",
+      "technologies": ["Python", "Excel VBA", "Tableau", "OR-Tools"],
+      "github": "https://github.com/TrHuy-0000"
+    }
+  ]
+}

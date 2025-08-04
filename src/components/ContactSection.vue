@@ -2,9 +2,9 @@
   <section id="contact" class="contact-section">
     <v-container>
       <div class="section-header">
-        <h2 class="section-title">Get In Touch</h2>
+        <h2 class="section-title">{{ t("contact.title") }}</h2>
         <p class="section-subtitle">
-          Let's collaborate to create something amazing together
+          {{ t("contact.subtitle") }}
         </p>
       </div>
 
@@ -36,7 +36,7 @@
 
             <!-- Social Links -->
             <div class="social-links">
-              <h4>Connect with me</h4>
+              <h4>{{ t("contact.connectWith") }}</h4>
               <div class="social-buttons">
                 <v-btn
                   v-for="social in socialLinks"
@@ -57,8 +57,8 @@
             <div class="availability-card">
               <div class="status-indicator"></div>
               <div>
-                <h4>Currently Available</h4>
-                <p>Open for new opportunities and collaborations</p>
+                <h4>{{ t("contact.available") }}</h4>
+                <p>{{ t("contact.availableDesc") }}</p>
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@
                 <v-text-field
                   v-model="formData.name"
                   :rules="nameRules"
-                  label="Your Name"
+                  :label="t('contact.form.name')"
                   variant="outlined"
                   density="comfortable"
                   prepend-inner-icon="mdi-account"
@@ -88,7 +88,7 @@
                 <v-text-field
                   v-model="formData.email"
                   :rules="emailRules"
-                  label="Your Email"
+                  :label="t('contact.form.email')"
                   variant="outlined"
                   density="comfortable"
                   prepend-inner-icon="mdi-email"
@@ -100,7 +100,7 @@
             <v-text-field
               v-model="formData.subject"
               :rules="subjectRules"
-              label="Subject"
+              :label="t('contact.form.subject')"
               variant="outlined"
               density="comfortable"
               prepend-inner-icon="mdi-format-title"
@@ -110,7 +110,7 @@
             <v-textarea
               v-model="formData.message"
               :rules="messageRules"
-              label="Your Message"
+              :label="t('contact.form.message')"
               variant="outlined"
               density="comfortable"
               prepend-inner-icon="mdi-message-text"
@@ -130,7 +130,7 @@
                 class="submit-btn"
               >
                 <v-icon start>mdi-send</v-icon>
-                Send Message
+                {{ t("contact.form.send") }}
               </v-btn>
               <v-btn
                 size="large"
@@ -138,7 +138,7 @@
                 @click="resetForm"
                 :disabled="loading"
               >
-                Clear
+                {{ t("contact.form.clear") }}
               </v-btn>
             </div>
           </v-form>
@@ -162,10 +162,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-//import { useI18n } from "vue-i18n";
+import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
 
-//const { t } = useI18n();
+const { t } = useI18n();
 
 // Form data
 const form = ref(null);
@@ -183,53 +183,53 @@ const formData = ref({
 });
 
 // Validation rules
-const nameRules = [
-  (v) => !!v || "Name is required",
-  (v) => v.length >= 2 || "Name must be at least 2 characters",
-];
+const nameRules = computed(() => [
+  (v) => !!v || t("contact.form.nameRequired"),
+  (v) => v.length >= 2 || t("contact.form.nameMin"),
+]);
 
-const emailRules = [
-  (v) => !!v || "Email is required",
-  (v) => /.+@.+\..+/.test(v) || "Email must be valid",
-];
+const emailRules = computed(() => [
+  (v) => !!v || t("contact.form.emailRequired"),
+  (v) => /.+@.+\..+/.test(v) || t("contact.form.emailValid"),
+]);
 
-const subjectRules = [
-  (v) => !!v || "Subject is required",
-  (v) => v.length >= 5 || "Subject must be at least 5 characters",
-];
+const subjectRules = computed(() => [
+  (v) => !!v || t("contact.form.subjectRequired"),
+  (v) => v.length >= 5 || t("contact.form.subjectMin"),
+]);
 
-const messageRules = [
-  (v) => !!v || "Message is required",
-  (v) => v.length >= 10 || "Message must be at least 10 characters",
-];
+const messageRules = computed(() => [
+  (v) => !!v || t("contact.form.messageRequired"),
+  (v) => v.length >= 10 || t("contact.form.messageMin"),
+]);
 
 // Contact information
-const contactInfo = [
+const contactInfo = computed(() => [
   {
     icon: "mdi-map-marker",
     color: "blue",
-    title: "Location",
-    value: "District 12, Ho Chi Minh City",
+    title: t("contact.addressTitle"),
+    value: t("contact.addressText"),
     link: "https://maps.google.com",
-    linkText: "View on map",
+    linkText: t("contact.viewOnMap"),
   },
   {
     icon: "mdi-email",
     color: "green",
-    title: "Email",
-    value: "huy36567@gmail.com",
+    title: t("contact.emailUsTitle"),
+    value: t("contact.emailUsText"),
     link: "mailto:huy36567@gmail.com",
-    linkText: "Send email",
+    linkText: t("contact.sendEmail"),
   },
   {
     icon: "mdi-phone",
     color: "purple",
-    title: "Phone",
-    value: "+84 93****62",
+    title: t("contact.callUsTitle"),
+    value: t("contact.callUsText"),
     link: "tel:+8493****62",
-    linkText: "Call now",
+    linkText: t("contact.callNow"),
   },
-];
+]);
 
 // Social links
 const socialLinks = [
@@ -252,8 +252,8 @@ const handleSubmit = async () => {
     loading.value = true;
 
     try {
-      // API call to backend
-      const response = await fetch("http://localhost:8000/contact", {
+      // API call to FastAPI backend
+      const response = await fetch("http://localhost:8001/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -261,22 +261,46 @@ const handleSubmit = async () => {
         body: JSON.stringify(formData.value),
       });
 
-      if (response.ok) {
-        snackbarMessage.value =
-          "Message sent successfully! I'll get back to you soon.";
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        snackbarMessage.value = result.message || t("contact.form.success");
         snackbarColor.value = "success";
         snackbar.value = true;
         resetForm();
+
+        // Track successful contact form submission
+        trackContactSubmission();
       } else {
-        throw new Error("Failed to send message");
+        throw new Error(result.detail || "Failed to send message");
       }
     } catch (error) {
-      snackbarMessage.value = "Failed to send message. Please try again.";
+      console.error("Contact form error:", error);
+      snackbarMessage.value = t("contact.form.error");
       snackbarColor.value = "error";
       snackbar.value = true;
     } finally {
       loading.value = false;
     }
+  }
+};
+
+// Track contact form submission for analytics
+const trackContactSubmission = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/api/analytics/page-view",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify("contact-form-submitted"),
+      }
+    );
+    console.log("Analytics tracked:", await response.text());
+  } catch (error) {
+    console.error("Analytics tracking error:", error);
   }
 };
 
